@@ -1,0 +1,86 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="TemaAtual" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1" Dense="false">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Info" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.subtitle1" Class="ml-3">Blazor WebMaps</MudText>
+        <MudAppBarSpacer />
+
+        <MudButton Color="Color.Surface" OnClick="@((e) => DarkMode())">Modo Noturno</MudButton>
+
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2" Color="Color.Tertiary">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <div class="container-fluid p-4">
+            @Body
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+
+    string MenuLateral = Colors.Grey.Lighten4;
+    string IconButtonColor = Colors.Shades.White;
+
+    void DrawerToggle() =>
+    _drawerOpen = !_drawerOpen;
+
+    protected override void OnInitialized() =>
+        TemaAtual = defaultTheme;
+
+    void DarkMode() =>
+        TemaAtual = TemaAtual == defaultTheme ? darkTheme : defaultTheme;
+
+    MudTheme TemaAtual = new MudTheme();
+
+    MudTheme defaultTheme = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            AppbarBackground = "#009688",
+            Info = Colors.Shades.White,
+            Success = "#009688",
+            Tertiary = "#49B1A7",
+            Surface = Colors.Shades.White,
+            DrawerIcon = Colors.Shades.White,
+            DrawerText = Colors.Shades.White,
+            Primary = "#006a60",
+        }
+    };
+
+    MudTheme darkTheme = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Tertiary = "#27272f",
+            Black = "#27272f",
+            Background = "#32333d",
+            BackgroundGrey = "#27272f",
+            Surface = "#d0e4ae",
+            DrawerBackground = "#27272f",
+            DrawerText = "rgba(255,255,255, 0.50)",
+            DrawerIcon = "rgba(255,255,255, 0.50)",
+            AppbarBackground = "#27272f",
+            AppbarText = "rgba(255,255,255, 0.70)",
+            TextPrimary = "rgba(255,255,255, 0.70)",
+            TextSecondary = "rgba(255,255,255, 0.50)",
+            ActionDefault = "#adadb1",
+            ActionDisabled = "rgba(255,255,255, 0.26)",
+            ActionDisabledBackground = "rgba(255,255,255, 0.12)",
+            Divider = "rgba(255,255,255, 0.12)",
+            DividerLight = "rgba(255,255,255, 0.06)",
+            TableLines = "rgba(255,255,255, 0.12)",
+            LinesDefault = "rgba(255,255,255, 0.12)",
+            LinesInputs = "rgba(255,255,255, 0.3)",
+            TextDisabled = "rgba(255,255,255, 0.2)"
+        }
+    };
+
+}

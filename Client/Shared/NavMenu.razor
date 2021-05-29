@@ -1,0 +1,20 @@
+﻿
+<MudPaper Width="100%" Class="d-inline-flex py-3" Square="true" Elevation="0" Style="background-color: transparent">
+    <MudNavMenu Class="mud-width-full text-light">
+        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary text-light">Menu</MudText>
+        <MudDivider Class="my-2" />
+        <MudNavLink Href="/Home" Icon="@Icons.Rounded.Home" IconColor="Color.Surface">Ínicio</MudNavLink>
+        <MudNavLink Href="/Mapa" Icon="@Icons.Rounded.Map" IconColor="Color.Surface">Mapa</MudNavLink>
+    </MudNavMenu>
+</MudPaper>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
