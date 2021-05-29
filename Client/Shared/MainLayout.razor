@@ -10,7 +10,14 @@
         <MudText Typo="Typo.subtitle1" Class="ml-3">Blazor WebMaps</MudText>
         <MudAppBarSpacer />
 
-        <MudButton Color="Color.Surface" OnClick="@((e) => DarkMode())">Modo Noturno</MudButton>
+        @if (!AtivadoModoNoturno)
+        {
+            <MudButton Color="Color.Surface" OnClick="@((e) => DarkMode())">Ativar Modo Noturno</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" OnClick="@((e) => DarkMode())">Desativar Modo Noturno</MudButton>
+        }
 
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2" Color="Color.Tertiary">
@@ -25,6 +32,7 @@
 
 @code {
     bool _drawerOpen = true;
+    bool AtivadoModoNoturno = false;
 
     string MenuLateral = Colors.Grey.Lighten4;
     string IconButtonColor = Colors.Shades.White;
@@ -35,8 +43,12 @@
     protected override void OnInitialized() =>
         TemaAtual = defaultTheme;
 
-    void DarkMode() =>
+    void DarkMode()
+    {
         TemaAtual = TemaAtual == defaultTheme ? darkTheme : defaultTheme;
+
+        AtivadoModoNoturno = !AtivadoModoNoturno;
+    }
 
     MudTheme TemaAtual = new MudTheme();
 
