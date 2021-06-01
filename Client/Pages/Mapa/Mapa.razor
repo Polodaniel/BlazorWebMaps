@@ -2,6 +2,58 @@
 
 @inherits MapaBase
 
-    <div style="width: 100%; height: 440px;" class="mt-3">
-        <LeafletMap />
+<div class="row">
+    <div class="col col-sm col-md col-lg col-xl">
+        <div class="row">
+            <div class="col col-sm col-md col-lg col-xl">
+
+                <InputFile id="fileInput" OnChange="UploadFilesAsync" hidden multiple />
+
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Filled.CloudUpload"
+                           for="fileInput"
+                           Size="Size.Small">
+                    Carregar Arquivos KML
+                </MudButton>
+
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Success"
+                           StartIcon="@Icons.Filled.Clear"
+                           OnClick="LimparLista"
+                           Size="Size.Small">
+                    Limpar
+                </MudButton>
+
+            </div>
+            <div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                @if (files != null)
+                {
+                    <MudText Typo="@Typo.h6">@files.Count() File@(files.Count() == 1 ? "" : "s"):</MudText>
+                }
+            </div>
+        </div>
+
+        @if (files != null)
+        {
+            <MudList>
+                @foreach (var file in files)
+                {
+                    <MudListItem Icon="@Icons.Filled.AttachFile" @key="@file" Dense="true">
+                        @file.Name <code>@file.Size bytes</code>
+                    </MudListItem>
+                }
+            </MudList>
+        }
+
     </div>
+    <div class="col col-sm col-md col-lg col-xl">
+        <div style="width: 100%; height: 440px;" class="mt-3">
+            <LeafletMap />
+        </div>
+    </div>
+</div>
+
+
