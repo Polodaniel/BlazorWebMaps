@@ -1,4 +1,6 @@
-﻿using BlazorWebMaps.Shared.Configs;
+﻿using BlazorWebMaps.Client.Shared.Componente;
+using BlazorWebMaps.Shared.Configs;
+using BlazorWebMaps.Shared.Conversor;
 using BlazorWebMaps.Shared.Mapa;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -21,6 +23,8 @@ namespace BlazorWebMaps.Client.Pages.Mapa
 
         public IList<IBrowserFile> files = new List<IBrowserFile>();
 
+        public LeafletMap leafletMap;
+
         public async Task UploadFilesAsync(InputFileChangeEventArgs e)
         {
             foreach (var file in e.GetMultipleFiles())
@@ -28,28 +32,23 @@ namespace BlazorWebMaps.Client.Pages.Mapa
                 files.Add(file);
 
                 var Arquivo = await ManipularArquivoAsync(file);
+
+                await leafletMap.MarcarMapa(Arquivo);
             }
         }
 
-        private async Task<int> ManipularArquivoAsync(IBrowserFile file)
+        private async Task<Dados> ManipularArquivoAsync(IBrowserFile file)
         {
-            var memoryStream = new MemoryStream();
+            var result = await new ConversorKML().ObterCoordenadas(file);
 
-            await file.OpenReadStream().CopyToAsync(memoryStream);
-
-            var array = memoryStream.ToArray();
-
-            XmlDocument doc = new XmlDocument();
-
-            doc.LoadXml(file.Name);
-
-            XDocument dox = XDocument.Parse(doc.OuterXml);
-            XNamespace ns = dox.Root.Name.Namespace;
-
-            return 0;
+            return result;
         }
 
-        public void LimparLista() =>
+        public async Task LimparLista() 
+        {
             files = new List<IBrowserFile>();
+
+            await leafletMap.RemoverMarcacoes();
+        }
     }
 }

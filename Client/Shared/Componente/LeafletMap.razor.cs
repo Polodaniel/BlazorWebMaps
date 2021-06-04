@@ -104,7 +104,12 @@ namespace BlazorWebMaps.Client.Shared.Componente
                 await JS.InvokeVoidAsync("ConfiguracaoMapa", Config.Attribution, Config.MinZoom, Config.MaxZoom);
             }
         }
-        
+
+        public async Task MarcarMapa(Dados dados) 
+        {
+            await JS.InvokeVoidAsync("CriaMarcacaoMapa", new Dados(dados.fazenda, dados.talhao, dados.area), dados.Coordenadas);
+        }
+
         public async Task AplicarMarcacoes()
         {
             await JS.InvokeVoidAsync("CriaMarcacaoMapa", new Dados("Fazenda 1", "001", "100"), MarcacaoUm);
