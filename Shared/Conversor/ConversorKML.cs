@@ -34,8 +34,9 @@ namespace BlazorWebMaps.Shared.Conversor
                         FileKML = KmlFile.Load(stream);
                     }
 
-                    //var Polygon = FileKML.Root.Flatten().OfType<Polygon>().Select(x => x).ToList();
-                    //var OuterBoundary = Polygon.Select(x => x.Flatten().OfType<OuterBoundary>().Select(y => y).ToList()).ToList();
+                    var Place = FileKML.Root.Flatten().OfType<Placemark>().ToList();
+
+                    Marcacao.fazenda = !Equals(Place.FirstOrDefault(),null) ? Place.FirstOrDefault().Name : "Fazenda não identificada !";
 
                     foreach (var poly in FileKML.Root.Flatten().OfType<Polygon>().ToList())
                     {

@@ -50,12 +50,47 @@
                     <MudText Typo="@Typo.overline" Color="Color.Primary"> Ops! Não foi carregado nenhum arquivo KML !</MudText>
                 }
             </MudExpansionPanel>
+
+            @if (ListaDados != null && ListaDados.Count > 0)
+            {
+                var ListaAgrupada = ListaDados.GroupBy(x => x.fazenda).ToList();
+
+                foreach (var item in ListaAgrupada)
+                {
+                    var NomeFazenda = item.Key;
+
+                    <MudExpansionPanel Text="@NomeFazenda" Style="margin-top: 20px;">
+                        <MudTable Items="@item.ToList()" Hover="true" Breakpoint="Breakpoint.Sm">
+                            <HeaderContent>
+                                <MudTh>Latitude</MudTh>
+                                <MudTh>Longitude</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Latitude">@context.latitude</MudTd>
+                                <MudTd DataLabel="Longitude">@context.longitude</MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </MudExpansionPanel>
+                }
+
+
+            }
+
         </MudExpansionPanels>
 
     </MudItem>
     <MudItem xs="12" sm="12" md="12" lg="6" xl="6" Style="width: 100%; height: 440px;">
 
-        <LeafletMap @ref="leafletMap" />
+        @if (files != null && files.Count > 0)
+        {
+            <LeafletMap @ref="leafletMap" />
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Warning">Ops! Mapa não foi carregado pois não existe nenhuma marcação.</MudAlert>
+
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="100%" />
+        }
 
     </MudItem>
 </MudGrid>
