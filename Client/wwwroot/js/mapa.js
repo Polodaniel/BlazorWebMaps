@@ -4,14 +4,26 @@ var ZoomMin;
 var ZoomMax;
 var AttributionConfig;
 
+var MapaInicializado = false;
+
 function InicializaMapa() {
 
     map = L.map(document.getElementById('mapDIV'), {
-        center: [-19.98006230129525, -48.75050174688201],
-        zoom: 14
+        center: [0, 0],
+        zoom: 1
     });
 
     ConfiguracaoMapa();
+}
+
+function InicializaMapa(Latitude, Longitude, Zoom) {
+
+    map = L.map(document.getElementById('mapDIV'), {
+        center: [Latitude, Longitude],
+        zoom: Zoom
+    });
+
+    ConfiguracaoMapaPrincipal();
 }
 
 function ConfiguracaoMapa(Attribution, MinZoom, MaxZoom) {
@@ -45,6 +57,15 @@ function CriaMarcacaoMapa(dados, result) {
     for (var i = 0; i < result.length; i++) {
         if (result[i].latitude != 0 && result[i].longitude != 0) {
             dataRow.push([result[i].latitude, result[i].longitude]);
+
+            if (i == 0 && MapaInicializado == false) {
+                MapaInicializado = true;
+
+                map.remove();
+
+                InicializaMapa(result[i].latitude, result[i].longitude, 13);
+
+            }
         }
     }
 
@@ -138,5 +159,13 @@ function RemoverMarcacaoMapa() {
         layer.remove();
     });
 
+    MapaInicializado = false;
+
     ConfiguracaoMapaPrincipal();
+}
+
+function RemoverMarcacaoMapaLoad() {
+    map.eachLayer((layer) => {
+        layer.remove();
+    });
 }
